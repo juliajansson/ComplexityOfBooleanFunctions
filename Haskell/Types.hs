@@ -265,57 +265,6 @@ unfix' :: KnownNat n => Alg n -> GAlg n
 unfix' alg = local2Global (T [1..nN]) alg
   where nN = fromIntegral (natVal (alg2Proxy alg))
 
-{-
--- Old definition of "local to global" index translator - seems to be a bit buggy.
-
-unfix :: [Index] -> Alg n -> Alg n
--- unfix _ Done    = Done
-unfix _ (Res b) = Res b
-unfix path (Pick i aF aT) = Pick j (rec aF) (rec aT)
-  where  j = iLToIndexMap path i
-         rec = unfix (i:path)
---  where  j = translateIndex path i
---         rec = unfix (extendPath j path)
-
-extendPath :: Eq a => a -> [a] -> [a]
-extendPath j path | elem j path = error "extendPath: duplicate index"
-                  | otherwise   = j:path
-
-translateIndex :: [Index] -> Index -> Index
-translateIndex path i = i + length (filter (<=i) path)
-
-
-iLToIndexMap :: [Index] -> Index -> Index
-iLToIndexMap [] = id
--- iLToIndexMap (i:is) = iLToIndexMap is . remap i
-iLToIndexMap (i:is) = remap i . iLToIndexMap is
-
-remap :: Index -> (Index -> Index)
-remap i = \j -> if j<i then j else j+1
-
--- TODO Better definition needed:
--- Examples:
---   visiting 1,2,3 -> local 1 is adjusted to global 4
---   visiting 2,3,1 -> local 1 is adjusted to global 4
---   visiting 2,3,4 -> local 1 is not adjusted, local 2 is adjusted to global 5
---   visiting 3,4,2 -> local 1 is not adjusted, local 2 is adjusted to global 5
--- We need to look at the visited indices (one by one?) and adjust i as we go.
---
--- invariant: local position i is in the tuple you get by remove i1 . remove i2 . ...
---   where all the i's are local indices.
--}
-{-
-Idea: update a "current index map" at each level. The map should take local index at level k to the top level n
-Starting point (k=n) is the identity function
-After Pick 1, the first position is gone, which means that the function is now (1+)
-After Pick 2, the function maps 1 to 1, 2.. to one more.
-After Pick i, then function maps j<i to itself, j>=i to one more
-Basically remaps the indices to "make place" for a slot at position i
-
-remap i = \j -> if j<i then j else j+1
-
--}
-
 
 ----------------
 
@@ -399,13 +348,12 @@ We have two cases:
 -}
 
 -- instance KnownNat n => Show (Alg n) where show = ("local: "++).show2
-
+------------------------------------------------------ SHOW FUNCTIONS -----------------------------------------------------
 instance KnownNat n => Show (Alg n) where show = ("global: "++).show3
 
 -- Want to do source code for tree in Tikz, seems to work now!
 -- But some indices seem a bit wrong
-{-
-*GenAlg> putStr $ show5 (algsAC!!2)
+{-*GenAlg> putStr $ show5 (algsAC!!2)
 [$x_1$, root 
 [$x_2$, EL = 0 [$x_3$, EL = 0 [$x_4$, EL = 0 [$x_5$, EL = 0 [1, EL = 0 ][0, EL = 1 ]][$x_5$, EL = 1 [0, EL = 0 ][1, EL = 1 ]]][1, EL = 1 ]][1, EL = 1 ]]
 [$x_2$, EL = 1 [1, EL = 0 ][$x_4$, EL = 1 [$x_4$, EL = 0 [1, EL = 0 ][$x_5$, EL = 1 [1, EL = 0 ][0, EL = 1 ]]][$x_5$, EL = 1 [$x_5$, EL = 0 [1, EL = 0 ][0, EL = 1 ]][1, EL = 1 ]]]]]

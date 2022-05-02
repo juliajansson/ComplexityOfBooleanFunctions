@@ -37,54 +37,44 @@ import Symbase
 import qualified Data.List
 import Data.Function (on)
 
-{-
-Specification:
-Given a boolean function f, generate all(?) proper algorithms for that function.
+---------------- RECURSIVE ALGORITHM GENERATION FUNCTIONS ----------------------
 
-Step 0: Brute force generation of all elements of type Alg n
-  filter for "properAlg"
+genPropAlg :: (KnownNat n, KnownNat (S n)) => GenT n -> GenT (S n)
+genPropAlg gP fun = case checkConst nN fun of
+                 Just bs  -> map Res bs
+                 Nothing  -> genPick gP diffInd fun
+  where nN = fromIntegral (natVal (typeHelpFun fun))
+--        diffInd = [1..nN] -- old definition
+        diffInd = findDiffSubfunctions nN fun
 
-Step 1: Given a function, generate all proper alg. for that function
-directly.
--}
+type GenT n = BoolFun n -> [Alg n]
 
-{-
-instance Fin (Alg 0) where univ = univAlg0
--}
-univAlg0 :: [Alg 0]
-univAlg0 = map Res univ
+genPick :: KnownNat n => GenT n -> [Index] -> GenT (S n)
+genPick gP is fn = do i <- is -- ++ [error ("genPick is="++show is)]
+                      aF <- gP (insBit i f fn)
+                      aT <- gP (insBit i t fn)
+                      return (Pick i aF aT)
 
+checkConst :: KnownNat n => Int -> BoolFun n -> Maybe [Bool]
+checkConst n f | isConst f  = Just [head (map f univ)]
+               | otherwise  = Nothing
 
--- instance KnownNat n => Fin (Alg n) where univ = univAlg
--- univAlg = error "TODO"
+-- Even n=0 works: an empty tuple is basically () and f : BoolFun 0 is
+-- basically a Boolean. All such functions are constant.
 
-univAlgStep :: KnownNat n => Int -> [Alg n] -> [Alg (S n)]
-univAlgStep nN as = map Res univ ++ univAlgPick nN as
+isZ n = fromIntegral n == (0::Int)
 
-univAlgPick :: KnownNat n => Int -> [Alg n] -> [Alg (S n)]
-univAlgPick nN as = do aF <- as
-                       aT <- as
-                       i <- [1..nN+1]
-                       return (Pick i aF aT)
--- TODO don't generate duplicate "pick"
-{-
-When generating, the subtrees are not allowed to use the same index as
-the top level Pick. One way to ensure this is to compute the set of
-all indices used and only "pick" among the remaining. One has to be a
-bit careful thinking about the meaning of "local" indices w.r.t global
-indices. But this "brute-force" method is never going to be very
-useful anyway, so it is time to go to the next level: only generate
-alg. for a particular function.
--}
+typeHelpFun :: BoolFun n -> Proxy n
+typeHelpFun _ = Proxy
 
-univAlg1 = univAlgStep 0 univAlg0
-univAlg2 = univAlgStep 1 univAlg1
-univAlg3 = univAlgStep 2 univAlg2
+findDiffSubfunctions :: KnownNat n => Int -> BoolFun (S n) -> [Index]
+findDiffSubfunctions n fun = uniqueInd
+  where  try i = (i, (insBit i f fun, insBit i t fun))
+         allSubFuns = map try [1..n]
+         uniqueSubFuns = Data.List.nubBy ((==) `on` snd) allSubFuns
+         uniqueInd = map fst uniqueSubFuns
 
-
-bruteforce = filter (\alg -> properAlg maj alg) univAlg3
-
-----------------
+---------------- GENERATING ALGORITHM EXAMPLES -------------------------
 
 genAlg0 :: GenT 0
 genAlg0 f = [Res (f (T []))]
@@ -106,54 +96,6 @@ genAlg8 :: GenT 8
 genAlg8 = genPropAlg genAlg7
 genAlg9 :: GenT 9
 genAlg9 = genPropAlg genAlg8
-
-genPropAlg :: (KnownNat n, KnownNat (S n)) => GenT n -> GenT (S n)
-genPropAlg gP fun = case checkConst nN fun of
-                 Just bs  -> map Res bs
-                 Nothing  -> genPick gP diffInd fun
-  where nN = fromIntegral (natVal (typeHelpFun fun))
---        diffInd = [1..nN] -- old definition
-        diffInd = findDiffSubfunctions nN fun
-
-
--- whiteLie :: Alg (S n) -> Alg n
--- whiteLie = Prelude.coerce
-
-type GenT n = BoolFun n -> [Alg n]
-
-genPick :: KnownNat n => GenT n -> [Index] -> GenT (S n)
-genPick gP is fn = do i <- is -- ++ [error ("genPick is="++show is)]
-                      aF <- gP (insBit i f fn)
-                      aT <- gP (insBit i t fn)
-                      return (Pick i aF aT)
-{-
-genPick :: KnownNat n => [Index] -> GenT (S n)
-genPick is fn = do i <- is
-                   aF <- genPropAlg (insBit i f fn)
-                   aT <- genPropAlg (insBit i t fn)
-                   return (Pick i aF aT)
--}
-
-checkConst :: KnownNat n => Int -> BoolFun n -> Maybe [Bool]
-checkConst n f | isConst f  = Just [head (map f univ)]
-               | otherwise  = Nothing
-
--- Even n=0 works: an empty tuple is basically () and f : BoolFun 0 is
--- basically a Boolean. All such functions are constant.
-
-isZ n = fromIntegral n == (0::Int)
-
-
-typeHelpFun :: BoolFun n -> Proxy n
-typeHelpFun _ = Proxy
-
-findDiffSubfunctions :: KnownNat n => Int -> BoolFun (S n) -> [Index]
-findDiffSubfunctions n fun = uniqueInd
-  where  try i = (i, (insBit i f fun, insBit i t fun))
-         allSubFuns = map try [1..n]
-         uniqueSubFuns = Data.List.nubBy ((==) `on` snd) allSubFuns
-         uniqueInd = map fst uniqueSubFuns
-
 
 {-
 maj (T bs) =  count bs > (length bs) `div` 2
@@ -240,18 +182,6 @@ allmaj :: [Alg 3]
 allmaj = genAlg3 maj
 {- 12 algoritmer (någon bug i show3 => ser ut som upprepade index). Jag tror alla kan genereras från permutationer: 3! * 2! * 1! = 12. För maj :: BoolFun 4 blir det 4! * 3! * 2! * 1! = 288 versioner (som alla är i samma ekvivalensklass).
 λ> Prelude.mapM_ print allmaj
-local: [[f<-1->[f<-1->t]]<-1->[[f<-1->t]<-1->t]]
-local: [[f<-1->[f<-1->t]]<-1->[[f<-1->t]<-2->t]]
-local: [[f<-2->[f<-1->t]]<-1->[[f<-1->t]<-1->t]]
-local: [[f<-2->[f<-1->t]]<-1->[[f<-1->t]<-2->t]]
-local: [[f<-1->[f<-1->t]]<-2->[[f<-1->t]<-1->t]]
-local: [[f<-1->[f<-1->t]]<-2->[[f<-1->t]<-2->t]]
-local: [[f<-2->[f<-1->t]]<-2->[[f<-1->t]<-1->t]]
-local: [[f<-2->[f<-1->t]]<-2->[[f<-1->t]<-2->t]]
-local: [[f<-1->[f<-1->t]]<-3->[[f<-1->t]<-1->t]]
-local: [[f<-1->[f<-1->t]]<-3->[[f<-1->t]<-2->t]]
-local: [[f<-2->[f<-1->t]]<-3->[[f<-1->t]<-1->t]]
-local: [[f<-2->[f<-1->t]]<-3->[[f<-1->t]<-2->t]]
 -- buggy show
 global: [[f<-2->[f<-2->t]]<-1->[[f<-2->t]<-2->t]]
 global: [[f<-2->[f<-2->t]]<-1->[[f<-2->t]<-3->t]]
@@ -268,12 +198,6 @@ global: [[f<-2->[f<-1->t]]<-3->[[f<-1->t]<-2->t]]
 -}
 
 testall = take 3 (genAlg4 andn)
-{- some examples, really unbalanced tree, but that is the nature of the all-function
-[local: [f<-1->[f<-1->[f<-1->[f<-1->t]]]],
-local: [f<-1->[f<-1->[f<-2->[f<-1->t]]]],
-local: [f<-1->[f<-2->[f<-1->[f<-1->t]]]]]
--}
-
 
 algsIterMaj :: [Alg 9]
 algsIterMaj = genAlg9 maj2
@@ -301,10 +225,7 @@ ns = nub ps
 
 printPolyList :: [Poly Int] -> String
 printPolyList ps = concat ["P" ++ show i ++"[p_]=" ++ printPoly (ps!!i) | i <- [0..length ps - 1]]
-{- Don't really understand this algorithm
-[local: [[f<-1->[[f<-1->[f<-1->t]]<-1->[[f<-1->t]<-1->t]]]<-1->[[[f<-1->[f<-1->t]]<-1->[[f<-1->t]<-1->t]]<-1->[[f<-1->t]<-1->t]]],
-local: [[f<-1->[[f<-1->[f<-1->t]]<-1->[[f<-1->t]<-1->t]]]<-1->[[[f<-1->[f<-1->t]]<-1->[[f<-1->t]<-1->t]]<-1->[[[f<-1->t]<-2->[f<-1->t]]<-1->t]]],
-local: [[f<-1->[[f<-1->[f<-1->t]]<-1->[[f<-1->t]<-1->t]]]<-1->[[[f<-1->[f<-1->t]]<-1->[[f<-1->t]<-1->t]]<-1->[[f<-1->t]<-2->t]]]]
+{-
 13 unique polynomials!!
 [P [2,4,2,-9,4,0],P [2,4,3,-10,4,0],P [2,4,3,-9,4,0],P [2,3,4,-10,4,0],P [3,2,3,-9,4,0],
 P [3,2,4,-10,4,0],P [3,2,4,-9,4,0],P [3,1,5,-10,4,0],P [3,3,1,-8,4,0],P [3,3,2,-9,4,0],

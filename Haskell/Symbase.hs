@@ -18,10 +18,7 @@ import DSLsofMath.PSDS
 import DSLsofMath.Algebra
 import Data.List (intersperse)
 
-testProbMajSymbase :: Ring a => SymBase a
---testProbMajSymbase = poly2symbase 2 testProbMaj
-testProbMajSymbase = P [2,6,2]
--- symmetric coefficient list => forall p. f p == f (1-p)
+---------------SMALL TESTS-------------------------------
 
 localtestf1 :: Ring a => a -> a
 localtestf1 p = 2*p^+0*(1-p)^+2 + 2*p^+1*(1-p)^+1 - 2*p^+2*(1-p)^+0
@@ -32,9 +29,7 @@ localtestf2 = evalSym 2 testProbMajSymbase
 localcheck :: Bool
 localcheck = eqPoly (localtestf1 xP) (localtestf2 (xP :: Poly Int))
 
-----------------
--- start of symbase implementation - only done degrees 1 and 2 so far
--- need to infer general explicit formula or recursive formula
+----------------SYMBASE IMPLEMENTATION------------------
 
 symbase :: Ring a => Int -> Int -> a -> a
 symbase n i = \p -> p^+i*(1-p)^+(n-i)
@@ -60,14 +55,6 @@ caseP :: Additive a => Poly a -> (a, Maybe (Poly a))
 caseP (P [])         = (zero, Nothing)
 caseP (P [a0])       = (a0, Nothing)
 caseP (P (a0:rest))  = (a0, Just (P rest))
-
-poly2symbaseold :: Ring a => Int -> Poly a -> SymBase a
-poly2symbaseold 1 (P (a0:a1:rest))    =  P (scaleL a0 [1, 1]) +
-                                      P (scaleL a1 [0, 1])
-  -- TODO make sure rest is zero
-poly2symbaseold 2 (P (a0:a1:a2:rest)) =  P (scaleL a0 [1, 2, 1]) +
-                                      P (scaleL a1 [0, 1, 1]) +
-                                      P (scaleL a2 [0, 0, 1])
   
 printSymbase :: Poly Int -> String 
 printSymbase (P as) = concat (intersperse "+" [show (as!!i) ++
@@ -105,7 +92,7 @@ conP c = P [c]
 mapP :: (a->b) -> (Poly a -> Poly b)
 mapP f (P as) = P (map f as)
 
-  -- TODO make sure rest is zero
+-------------- SOME TESTS ------------------------
 p2 :: Ring a => a -> a
 p2 = evalSL 2 [0,0,1]
 

@@ -76,9 +76,7 @@ fAC (T bs) = not (same as) || same cs
 
 same :: [Bool] -> Bool 
 same bs = and bs || not (or bs)
------------------------------TRIBES--------------------------------------
---also has to use blocks to test
-----------------
+
 ---------------- TUP HELP FUNCTIONS FOR ITERATED MAJORITY ----------------
 concTup :: Tup n (Tup m a) -> Tup (Mul n m) a
 concTup (T ts) = T (concatMap unT ts)
