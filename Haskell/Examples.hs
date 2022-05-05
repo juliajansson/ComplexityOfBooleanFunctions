@@ -3,20 +3,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE ConstraintKinds #-}
 module Examples where
-import Prelude (
-  Read, read, ReadS, String, Char, print,
-  Eq((==)), (>), (<),
-  Maybe(Nothing, Just),
-  Show, show,
-  Functor(fmap),
-  Foldable,
-  Bool(False, True), (&&), (||), not, otherwise, and, or,
-  Int, divMod, div, Integral, pred,
-  Double, Rational,
-  (.), id, const, error, asTypeOf, snd,
-  head, all, concatMap, map, (!!), (++), length, tail,
-  splitAt, span, drop, take, foldr, filter, zipWith, reverse)
-import Types
+import Prelude hiding (Num(..),Fractional(..), fromIntegral, sum, product)
 import FiniteEnum
 import Symbase
 import Data.Function(on)

@@ -7,7 +7,6 @@ import Prelude hiding (Num(..),Fractional(..), fromIntegral)
 import Data.List (intersperse)
 import Numeric.Natural -- (Natural)
 import DSLsofMath.Algebra
-import DSLsofMath.PSDS
 import EmptyTypeNats
 import FiniteEnum
 type REAL = Double

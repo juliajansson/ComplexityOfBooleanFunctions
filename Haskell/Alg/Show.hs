@@ -1,40 +1,13 @@
 {-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE UndecidableInstances #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeSynonymInstances #-}
-{-# LANGUAGE RebindableSyntax #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GADTs #-}
-module Types (module Types, module EmptyTypeNats, module DSLsofMath.Algebra) where
-import qualified Prelude
-import Prelude (
-  Read, read, ReadS, String, Char, print,
-  Eq((==)), (>), (<), (<=),
-  Maybe(Nothing, Just),
-  Show, show,
-  Functor(fmap),
-  Foldable,
-  Bool(False, True), (&&), (||), not, otherwise, and,
-  Ord, compare, Ordering(LT,EQ,GT),
-  Int, divMod, div, Integral, pred,
-  Double, Rational,
-  (.), id, const, error, asTypeOf, ($),
-  head, all, concatMap, map, (!!), (++), length, tail,
-  even, odd, max,
-  splitAt, span, drop, take, repeat, replicate,
-  foldr, filter, zipWith, elem, maximum, concat,
-  undefined,
-  putStrLn, IO)
+{-# LANGUAGE FlexibleContexts #-}
+module Alg.Show (module Alg.Show) where
+import Prelude hiding (Num(..),Fractional(..), fromIntegral)
 import Data.List (intersperse)
 import Numeric.Natural -- (Natural)
-import DSLsofMath.Algebra
-import EmptyTypeNats
-import FiniteEnum
-import Tuple
 import Alg
 ------------------------------------------------------ SHOW FUNCTIONS -----------------------------------------------------
 instance KnownNat n => Show (Alg n) where show = ("global: "++).show3

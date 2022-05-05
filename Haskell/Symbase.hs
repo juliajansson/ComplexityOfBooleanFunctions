@@ -1,19 +1,8 @@
 {-# LANGUAGE RebindableSyntax #-}
-module Symbase where
-import Types
-import Prelude (
-  Read, read, ReadS, String, Char, print,
-  Eq((==)), (>), (<),
-  Maybe(Nothing, Just),
-  Show, show,
-  Functor(fmap),
-  Foldable,
-  Bool(False, True), (&&), (||), not, otherwise, and,
-  Int, divMod, div, Integral, pred,
-  Double, Rational,
-  (.), id, const, error, asTypeOf,
-  head, all, concatMap, map, (!!), (++), length, tail, concat,
-  splitAt, span, drop, take, foldr, filter, zipWith, reverse)
+module Symbase (module Symbase, module Alg, module Expectation) where
+import Alg
+import Expectation
+import Prelude hiding (Num(..),Fractional(..), fromIntegral, sum, product)
 import DSLsofMath.PSDS
 import DSLsofMath.Algebra
 import Data.List (intersperse)
@@ -22,6 +11,10 @@ import Data.List (intersperse)
 
 localtestf1 :: Ring a => a -> a
 localtestf1 p = 2*p^+0*(1-p)^+2 + 2*p^+1*(1-p)^+1 - 2*p^+2*(1-p)^+0
+
+testProbMajSymbase :: Ring a => SymBase a
+--testProbMajSymbase = poly2symbase 2 testProbMaj
+testProbMajSymbase = P [2,6,2]
 
 localtestf2 :: Ring a => a -> a
 localtestf2 = evalSym 2 testProbMajSymbase

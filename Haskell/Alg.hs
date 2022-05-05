@@ -8,7 +8,6 @@ module Alg (module Alg, module Tuple) where
 import Prelude hiding (Num(..),Fractional(..), fromIntegral)
 import Data.List (intersperse)
 import Numeric.Natural -- (Natural)
-import DSLsofMath.PSDS
 import FiniteEnum
 import Tuple
 ---------------- ALGORITHMS DEFINITION ----------------

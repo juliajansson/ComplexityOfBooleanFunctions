@@ -10,7 +10,8 @@ import Types
 import DSLsofMath.Algebra
 import DSLsofMath.PSDS
 import FiniteEnum
-
+import Tuple
+import Alg
 ---------------- CALCULATION OF EXPECTATION ----------------
 probability :: (Foldable t, Functor t, Ring a) => t Bool -> Poly a
 probability = product . fmap bool2Prob -- gives a polynomial of degree length of list
