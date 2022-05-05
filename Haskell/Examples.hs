@@ -3,8 +3,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE ConstraintKinds #-}
 module Examples where
-import Prelude hiding (Num(..),Fractional(..), fromIntegral, sum, product)
-import FiniteEnum
+import Prelude hiding (Num(..),Fractional(..), fromIntegral, sum, product, flip)
 import Symbase
 import Data.Function(on)
 import Data.List(nub, nubBy)

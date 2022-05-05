@@ -6,9 +6,6 @@
 {-# LANGUAGE FlexibleContexts #-}
 module Alg (module Alg, module Tuple) where
 import Prelude hiding (Num(..),Fractional(..), fromIntegral)
-import Data.List (intersperse)
-import Numeric.Natural -- (Natural)
-import FiniteEnum
 import Tuple
 ---------------- ALGORITHMS DEFINITION ----------------
 data Alg (n :: Nat) where -- should have arguments n and f

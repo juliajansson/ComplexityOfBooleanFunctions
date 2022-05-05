@@ -4,7 +4,6 @@ import Alg
 import Expectation
 import Prelude hiding (Num(..),Fractional(..), fromIntegral, sum, product)
 import DSLsofMath.PSDS
-import DSLsofMath.Algebra
 import Data.List (intersperse)
 
 ---------------SMALL TESTS-------------------------------

@@ -12,23 +12,8 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE DataKinds #-}
 module GenAlg where
-import Prelude (
-  Read, read, ReadS, String, Char, print, putStr, ($), concat,
-  Eq((==)), Ord(compare), (>), (<), Ordering,
-  Maybe(Nothing, Just),
-  Show, show,
-  Functor(fmap),
-  Foldable,
-  Bool(False, True), (&&), (||), not, otherwise, and, or,
-  Int, divMod, div, Integral, pred,
-  Double, Rational, fst, snd,
-  (.), id, const, error, asTypeOf,
-  head, all, concatMap, map, (!!), (++), length, tail, zip,
-  splitAt, span, drop, take, foldr, filter, zipWith, reverse,
-  return, (>>=))
-import Types
+import Prelude hiding (Num(..),Fractional(..), fromIntegral, sum, product, flip)
 import Examples (maj, algmaj, alggraph45, andn, fAC, askorder, maj2)
-import FiniteEnum
 --I commented this import out since it caused problems for me, dont know why, but maybe it is needed
 --import Haskell.DSLsofMath.DerAll.Test (test')
 import Data.List (permutations, nub, (\\), intersperse, sort)

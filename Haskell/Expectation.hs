@@ -6,11 +6,7 @@ module Expectation where
 import qualified Prelude
 import Prelude hiding (Num(..),Fractional(..), fromIntegral, sum, product)
 import Data.List (intersperse)
-import Types
-import DSLsofMath.Algebra
 import DSLsofMath.PSDS
-import FiniteEnum
-import Tuple
 import Alg
 ---------------- CALCULATION OF EXPECTATION ----------------
 probability :: (Foldable t, Functor t, Ring a) => t Bool -> Poly a

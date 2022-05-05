@@ -2,14 +2,12 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE FlexibleInstances #-}
-module Tuple (module Tuple, module EmptyTypeNats, module DSLsofMath.Algebra) where
+module Tuple (module Tuple, module EmptyTypeNats, module FiniteEnum, module DSLsofMath.Algebra) where
 import Prelude hiding (Num(..),Fractional(..), fromIntegral)
-import Data.List (intersperse)
 import Numeric.Natural -- (Natural)
 import DSLsofMath.Algebra
 import EmptyTypeNats
 import FiniteEnum
-type REAL = Double
 ---------------- Tuples and Boolean functions ----------------
 newtype Tup (n::Nat) a = T {unT :: [a]}
   deriving Eq
