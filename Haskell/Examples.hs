@@ -308,7 +308,6 @@ algcont36789 = algmajgen 7 8 9 df df dt df dt dt
 algcont789 :: Alg 3
 algcont789 = algmajgen 7 8 9 df df dt df dt dt
 
---This one is not correct either :(
 algitermaj2 :: Alg 9
 algitermaj2 = algmajgen 1 2 3 b00 b010 b011 b100 b101 b11
 
@@ -330,7 +329,6 @@ b101 = b011
 b11 :: Alg 7
 b11 = algmajgen 4 5 6 algcont36789 algcont3789 dt algcont3789 dt dt
 
---This one is not correct either :(
 algitermaj3 :: Alg 9
 algitermaj3 = algmajgen 1 2 3 c00 c010 c011 c100 c101 c11
 
