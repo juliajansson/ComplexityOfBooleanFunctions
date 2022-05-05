@@ -2,7 +2,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE RebindableSyntax #-}
-module Expectation where
+module LevelpComplexity where
 import qualified Prelude
 import Prelude hiding (Num(..),Fractional(..), fromIntegral, sum, product)
 import Data.List (intersperse)

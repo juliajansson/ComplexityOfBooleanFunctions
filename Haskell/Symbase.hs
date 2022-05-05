@@ -1,7 +1,7 @@
 {-# LANGUAGE RebindableSyntax #-}
-module Symbase (module Symbase, module Alg, module Expectation) where
+module Symbase (module Symbase, module Alg, module LevelpComplexity) where
 import Alg
-import Expectation
+import LevelpComplexity
 import Prelude hiding (Num(..),Fractional(..), fromIntegral, sum, product)
 import DSLsofMath.PSDS
 import Data.List (intersperse)

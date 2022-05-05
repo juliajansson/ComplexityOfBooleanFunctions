@@ -4,7 +4,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE FlexibleContexts #-}
-module Alg.Show (module Alg.Show) where
+module Alg.Show where
 import Prelude hiding (Num(..),Fractional(..), fromIntegral)
 import Data.List (intersperse)
 import Numeric.Natural -- (Natural)

@@ -7,6 +7,7 @@ import Prelude hiding (Num(..),Fractional(..), fromIntegral, sum, product, flip)
 import Symbase
 import Data.Function(on)
 import Data.List(nub, nubBy)
+import Alg.Show
 
 ---------------- ALGORITHM EXAMPLES ----------------
 -- All algorithms for the and_2 function:

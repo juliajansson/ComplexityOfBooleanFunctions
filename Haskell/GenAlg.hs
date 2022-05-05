@@ -21,6 +21,7 @@ import DSLsofMath.PSDS
 import Symbase
 import qualified Data.List
 import Data.Function (on)
+import Alg.Show
 
 ---------------- RECURSIVE ALGORITHM GENERATION FUNCTIONS ----------------------
 
