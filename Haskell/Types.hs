@@ -36,7 +36,6 @@ import EmptyTypeNats
 import FiniteEnum
 import Tuple
 import Alg
-type REAL = Double
 ------------------------------------------------------ SHOW FUNCTIONS -----------------------------------------------------
 instance KnownNat n => Show (Alg n) where show = ("global: "++).show3
 
