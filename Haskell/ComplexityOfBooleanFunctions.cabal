@@ -18,8 +18,8 @@ build-type:          Simple
 extra-source-files:  README.md, CHANGELOG.md
 
 library
-  exposed-modules:     Types, FiniteEnum
-  other-modules:       DSLsofMath.Algebra, DSLsofMath.FunExp, DSLsofMath.PSDS, EmptyTypeNats
+  exposed-modules:     Tuple, Alg, Alg.Show, LevelpComplexity, Symbase, Examples, GenAlg
+  other-modules:       DSLsofMath.Algebra, DSLsofMath.FunExp, DSLsofMath.PSDS, EmptyTypeNats, FiniteEnum
 
   other-extensions:    ScopedTypeVariables, UndecidableInstances, FlexibleContexts, FlexibleInstances, TypeSynonymInstances, GADTs
   build-depends:       base >=4.13 && <4.14
