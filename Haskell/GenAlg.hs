@@ -1,21 +1,10 @@
-{-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE PolyKinds #-}
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE TypeSynonymInstances #-}
-{-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE GADTs #-}
-{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE DataKinds #-}
 module GenAlg where
 import Prelude hiding (Num(..),Fractional(..), fromIntegral, sum, product, flip)
 import Examples (maj, algmaj, alggraph45, andn, fAC, askorder, maj2)
---I commented this import out since it caused problems for me, dont know why, but maybe it is needed
---import Haskell.DSLsofMath.DerAll.Test (test')
 import Data.List (permutations, nub, (\\), intersperse, sort)
 import DSLsofMath.PSDS
 import Symbase
