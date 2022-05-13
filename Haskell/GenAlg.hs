@@ -1,5 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FlexibleInstances #-} 
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE DataKinds #-}
 module GenAlg where
@@ -416,4 +416,106 @@ l((P [5,-5,  5, 1,-2,0],global: [[[[[t<-4->f]<-3->t]<-2->t]<-1->[t<-2->[t<-3->[t
 m((P [5,-5,  6,-1,-2,0],global: [[[[[t<-4->f]<-3->t]<-2->t]<-4->[[[f<-4->t]<-3->t]<-2->t]]<-1->[[t<-2->[t<-3->[t<-4->f]]]<-4->[[t<-2->[t<-3->f]]<-5->t]]]),24)
 m((P [5,-5,  6,-1,-2,0],global: [[[[[t<-4->f]<-3->t]<-2->t]<-1->[t<-2->[t<-3->[t<-4->f]]]]<-4->[[[[f<-4->t]<-3->t]<-2->t]<-1->[[t<-2->[t<-3->f]]<-4->t]]]),39)
 
+
+insBit 1 f fAC
+tab2Fun [({FFFF},True),({FFFT},False),({FFTF},False),({FFTT},True),({FTFF},True),({FTFT},True),({FTTF},True),({FTTT},True),
+         ({TFFF},True),({TFFT},True), ({TFTF},True), ({TFTT},True),({TTFF},True),({TTFT},True),({TTTF},True),({TTTT},True)]
+
+insBit 1 t fAC
+[({FFFF},True),({FFFT},True),({FFTF},True),({FFTT},True),({FTFF},True),({FTFT},True), ({FTTF},True), ({FTTT},True),
+ ({TFFF},True),({TFFT},True),({TFTF},True),({TFTT},True),({TTFF},True),({TTFT},False),({TTTF},False),({TTTT},True)]
+
+ genAlg4 (insBit 1 t fAC)
+[global: [t<-1->[t<-2->[[t<-4->f]<-3->[f<-4->t]]]],
+global: [t<-1->[[t<-2->[t<-4->f]]<-3->[t<-2->[f<-4->t]]]],
+global: [t<-1->[[t<-2->[t<-4->f]]<-3->[[t<-2->f]<-4->t]]],
+global: [[t<-1->[t<-2->[t<-4->f]]]<-3->[t<-1->[t<-2->[f<-4->t]]]],
+global: [[t<-1->[t<-2->[t<-4->f]]]<-3->[t<-1->[[t<-2->f]<-4->t]]],
+global: [[t<-1->[t<-2->[t<-4->f]]]<-3->[[t<-1->[t<-2->f]]<-4->t]]]
+
+ genAlg4 (insBit 1 f fAC)
+[global: [[[[t<-4->f]<-3->[f<-4->t]]<-2->t]<-1->t],
+global: [[[[t<-4->f]<-2->t]<-3->[[f<-4->t]<-2->t]]<-1->t],
+global: [[[t<-4->[f<-2->t]]<-3->[[f<-4->t]<-2->t]]<-1->t],
+global: [[[[t<-4->f]<-2->t]<-1->t]<-3->[[[f<-4->t]<-2->t]<-1->t]],
+global: [[[t<-4->[f<-2->t]]<-1->t]<-3->[[[f<-4->t]<-2->t]<-1->t]],
+global: [[t<-4->[[f<-2->t]<-1->t]]<-3->[[[f<-4->t]<-2->t]<-1->t]]]
+
+*GenAlg> printAlg ((genAlg4 (insBit 1 f fAC))!!0)
+         1 
+       2  t
+   3    t  
+ 4   4     
+t f f t    
+*GenAlg> printAlg ((genAlg4 (insBit 1 f fAC))!!1)
+           1 
+     3      t
+   2     2   
+ 4  t  4  t  
+t f   f t    
+*GenAlg> printAlg ((genAlg4 (insBit 1 f fAC))!!2)
+           1 
+     3      t
+ 4       2   
+t  2   4  t  
+  f t f t    
+*GenAlg> printAlg ((genAlg4 (insBit 1 f fAC))!!3)
+       3       
+     1       1 
+   2  t    2  t
+ 4  t    4  t  
+t f     f t   
+*GenAlg> printAlg ((genAlg4 (insBit 1 f fAC))!!4)
+       3       
+     1       1 
+ 4    t    2  t
+t  2     4  t  
+  f t   f t    
+*GenAlg> printAlg ((genAlg4 (insBit 1 f fAC))!!5)
+       3       
+ 4           1 
+t    1     2  t
+   2  t  4  t  
+  f t   f t  
+
+
+*GenAlg> map alg2Poly (genAlg4 (insBit 1 t fAC))
+[P [1,1,2,0,0],P [1,2,1,0,0],P [1,2,2,-2,0],P [2,1,1,0,0],P [2,1,2,-2,0],P [2,2,0,-2,0]]
+
+*GenAlg> printAlg ((genAlg4 (insBit 1 t fAC))!!0)
+ 1         
+t  2       
+  t    3   
+     4   4 
+    t f f t
+*GenAlg> printAlg ((genAlg4 (insBit 1 t fAC))!!1)
+ 1           
+t      3     
+   2     2   
+  t  4  t  4 
+    t f   f t
+*GenAlg> printAlg ((genAlg4 (insBit 1 t fAC))!!2)
+ 1           
+t      3     
+   2       4 
+  t  4   2  t
+    t f t f  
+*GenAlg> printAlg ((genAlg4 (insBit 1 t fAC))!!3)
+       3       
+ 1       1     
+t  2    t  2   
+  t  4    t  4 
+    t f     f t
+*GenAlg> printAlg ((genAlg4 (insBit 1 t fAC))!!4)
+       3       
+ 1       1     
+t  2    t    4 
+  t  4     2  t
+    t f   t f  
+*GenAlg> printAlg ((genAlg4 (insBit 1 t fAC))!!5)
+       3       
+ 1           4 
+t  2     1    t
+  t  4  t  2   
+    t f   t f  
 -}

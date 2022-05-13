@@ -246,3 +246,10 @@ specSymbase1 n p x =  evalSym n (poly2symbase n p) x == evalP p x
 specSymbase2 ::  (Eq a, Ring a) => Size -> Poly a -> Bool
 specSymbase2 n po = eqPoly po (symbase2poly n (poly2symbase n po))
 
+--notes:
+{-
+*Symbase> poly2symbase 9 (P [3,3,3,-3,-3,-3,1,1,1])
+P [3,30,135,354,588,630,424,166,33,3]
+*Symbase> poly2symbase 8 (P [3,3,3,-3,-3,-3,1,1,1])
+P [3,27,108,246,342,288,136,30,3]
+-}
